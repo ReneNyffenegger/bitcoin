@@ -2,6 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include "tq84-cpp-debug/tq84_debug.hpp"
+
 #if defined(HAVE_CONFIG_H)
 #include "config/bitcoin-config.h"
 #endif
@@ -536,6 +538,7 @@ WId BitcoinApplication::getMainWinId() const
 #ifndef BITCOIN_QT_TEST
 int main(int argc, char *argv[])
 {
+    TQ84_DEBUG_INDENT("entering main");
     SetupEnvironment();
 
     /// 1. Parse command-line options. These take precedence over anything else.
