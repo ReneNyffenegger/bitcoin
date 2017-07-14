@@ -1,3 +1,6 @@
 [submodule "src/tq84-c-debug"]
 	path = src/tq84-c-debug
 	url = https://github.com/ReneNyffenegger/tq84-c-debug
+[submodule "src/tq84-cpp-debug"]
+	path = src/tq84-cpp-debug
+	url = https://github.com/ReneNyffenegger/tq84-cpp-debug
