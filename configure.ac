@@ -21,7 +21,7 @@ BITCOIN_TX_NAME=bitcoin-tx
 
 dnl Unless the user specified ARFLAGS, force it to be cr
 AC_ARG_VAR(ARFLAGS, [Flags for the archiver, defaults to <cr> if not set])
-if test "x${ARFLAGS}" != "xset"; then
+if test "x${ARFLAGS+set}" != "xset"; then
   ARFLAGS="cr"
 fi
 
