@@ -2,6 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include "tq84-cpp-debug/tq84_debug.hpp"
 #include "dbwrapper.h"
 #include "uint256.h"
 #include "random.h"
@@ -23,8 +24,10 @@ BOOST_FIXTURE_TEST_SUITE(dbwrapper_tests, BasicTestingSetup)
                        
 BOOST_AUTO_TEST_CASE(dbwrapper)
 {
+    TQ84_DEBUG_INDENT("Testcase: dbwrapper");
     // Perform tests both obfuscated and non-obfuscated.
     for (int i = 0; i < 2; i++) {
+        TQ84_DEBUG_INDENT("Perform tests both obfuscated and non-obfuscated");
         bool obfuscate = (bool)i;
         fs::path ph = fs::temp_directory_path() / fs::unique_path();
         CDBWrapper dbw(ph, (1 << 20), true, false, obfuscate);
@@ -44,6 +47,7 @@ BOOST_AUTO_TEST_CASE(dbwrapper)
 // Test batch operations
 BOOST_AUTO_TEST_CASE(dbwrapper_batch)
 {
+    TQ84_DEBUG_INDENT("Testcase: dbwrapper_batch");
     // Perform tests both obfuscated and non-obfuscated.
     for (int i = 0; i < 2; i++) {
         bool obfuscate = (bool)i;
@@ -81,6 +85,7 @@ BOOST_AUTO_TEST_CASE(dbwrapper_batch)
 
 BOOST_AUTO_TEST_CASE(dbwrapper_iterator)
 {
+    TQ84_DEBUG_INDENT("Testcase: dbwrapper_iterator");
     // Perform tests both obfuscated and non-obfuscated.
     for (int i = 0; i < 2; i++) {
         bool obfuscate = (bool)i;
@@ -123,6 +128,7 @@ BOOST_AUTO_TEST_CASE(dbwrapper_iterator)
 // Test that we do not obfuscation if there is existing data.
 BOOST_AUTO_TEST_CASE(existing_data_no_obfuscate)
 {
+    TQ84_DEBUG_INDENT("Testcase: existing_data_no_obfuscate");
     // We're going to share this fs::path between two wrappers
     fs::path ph = fs::temp_directory_path() / fs::unique_path();
     create_directories(ph);
@@ -165,6 +171,7 @@ BOOST_AUTO_TEST_CASE(existing_data_no_obfuscate)
 // Ensure that we start obfuscating during a reindex.
 BOOST_AUTO_TEST_CASE(existing_data_reindex)
 {
+    TQ84_DEBUG_INDENT("Testcase: existing_data_reindex");
     // We're going to share this fs::path between two wrappers
     fs::path ph = fs::temp_directory_path() / fs::unique_path();
     create_directories(ph);
@@ -202,6 +209,7 @@ BOOST_AUTO_TEST_CASE(existing_data_reindex)
 
 BOOST_AUTO_TEST_CASE(iterator_ordering)
 {
+    TQ84_DEBUG_INDENT("Testcase: iterator_ordering");
     fs::path ph = fs::temp_directory_path() / fs::unique_path();
     CDBWrapper dbw(ph, (1 << 20), true, false, false);
     for (int x=0x00; x<256; ++x) {
@@ -217,6 +225,9 @@ BOOST_AUTO_TEST_CASE(iterator_ordering)
             seek_start = 0x00;
         else
             seek_start = 0x80;
+        
+        TQ84_DEBUG_LOG_VAR(seek_start);
+
         it->Seek((uint8_t)seek_start);
         for (int x=seek_start; x<256; ++x) {
             uint8_t key;
@@ -271,6 +282,7 @@ struct StringContentsSerializer {
 
 BOOST_AUTO_TEST_CASE(iterator_string_ordering)
 {
+    TQ84_DEBUG_INDENT("Testcase: iterator_string_ordering");
     char buf[10];
 
     fs::path ph = fs::temp_directory_path() / fs::unique_path();
@@ -293,6 +305,7 @@ BOOST_AUTO_TEST_CASE(iterator_string_ordering)
             seek_start = 0;
         else
             seek_start = 5;
+        TQ84_DEBUG_LOG_VAR(seek_start);
         snprintf(buf, sizeof(buf), "%d", seek_start);
         StringContentsSerializer seek_key(buf);
         it->Seek(seek_key);

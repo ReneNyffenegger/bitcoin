@@ -2,6 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include "tq84-cpp-debug/tq84_debug.hpp"
 #include "dbwrapper.h"
 
 #include "fs.h"
@@ -92,6 +93,8 @@ static leveldb::Options GetOptions(size_t nCacheSize)
 
 CDBWrapper::CDBWrapper(const fs::path& path, size_t nCacheSize, bool fMemory, bool fWipe, bool obfuscate)
 {
+    TQ84_DEBUG_INDENT("CDBWrapper - Constructor");
+    TQ84_DEBUG_LOG_VAR(path.string(), nCacheSize, fMemory, fWipe, obfuscate);
     penv = NULL;
     readoptions.verify_checksums = true;
     iteroptions.verify_checksums = true;
@@ -137,6 +140,7 @@ CDBWrapper::CDBWrapper(const fs::path& path, size_t nCacheSize, bool fMemory, bo
 
 CDBWrapper::~CDBWrapper()
 {
+    TQ84_DEBUG_INDENT("Destructor CDBWrapper");
     delete pdb;
     pdb = NULL;
     delete options.filter_policy;
