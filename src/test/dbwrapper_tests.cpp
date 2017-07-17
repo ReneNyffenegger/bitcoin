@@ -26,9 +26,8 @@ BOOST_AUTO_TEST_CASE(dbwrapper)
 {
     TQ84_DEBUG_INDENT("Testcase: dbwrapper");
     // Perform tests both obfuscated and non-obfuscated.
-    for (int i = 0; i < 2; i++) {
+    for (bool obfuscate : {false, true}) {
         TQ84_DEBUG_INDENT("Perform tests both obfuscated and non-obfuscated");
-        bool obfuscate = (bool)i;
         fs::path ph = fs::temp_directory_path() / fs::unique_path();
         CDBWrapper dbw(ph, (1 << 20), true, false, obfuscate);
         char key = 'k';
@@ -49,8 +48,7 @@ BOOST_AUTO_TEST_CASE(dbwrapper_batch)
 {
     TQ84_DEBUG_INDENT("Testcase: dbwrapper_batch");
     // Perform tests both obfuscated and non-obfuscated.
-    for (int i = 0; i < 2; i++) {
-        bool obfuscate = (bool)i;
+    for (bool obfuscate : {false, true}) {
         fs::path ph = fs::temp_directory_path() / fs::unique_path();
         CDBWrapper dbw(ph, (1 << 20), true, false, obfuscate);
 
@@ -87,8 +85,7 @@ BOOST_AUTO_TEST_CASE(dbwrapper_iterator)
 {
     TQ84_DEBUG_INDENT("Testcase: dbwrapper_iterator");
     // Perform tests both obfuscated and non-obfuscated.
-    for (int i = 0; i < 2; i++) {
-        bool obfuscate = (bool)i;
+    for (bool obfuscate : {false, true}) {
         fs::path ph = fs::temp_directory_path() / fs::unique_path();
         CDBWrapper dbw(ph, (1 << 20), true, false, obfuscate);
 
@@ -219,15 +216,8 @@ BOOST_AUTO_TEST_CASE(iterator_ordering)
     }
 
     std::unique_ptr<CDBIterator> it(const_cast<CDBWrapper&>(dbw).NewIterator());
-    for (int c=0; c<2; ++c) {
-        int seek_start;
-        if (c == 0)
-            seek_start = 0x00;
-        else
-            seek_start = 0x80;
-        
+    for (int seek_start : {0x00, 0x80}) {
         TQ84_DEBUG_LOG_VAR(seek_start);
-
         it->Seek((uint8_t)seek_start);
         for (int x=seek_start; x<256; ++x) {
             uint8_t key;
@@ -299,12 +289,7 @@ BOOST_AUTO_TEST_CASE(iterator_string_ordering)
     }
 
     std::unique_ptr<CDBIterator> it(const_cast<CDBWrapper&>(dbw).NewIterator());
-    for (int c=0; c<2; ++c) {
-        int seek_start;
-        if (c == 0)
-            seek_start = 0;
-        else
-            seek_start = 5;
+    for (int seek_start : {0, 5}) {
         TQ84_DEBUG_LOG_VAR(seek_start);
         snprintf(buf, sizeof(buf), "%d", seek_start);
         StringContentsSerializer seek_key(buf);
